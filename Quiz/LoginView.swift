@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ContentView: View {
+struct LoginView: View {
     @StateObject private var quizViewModel = QuizViewModel()
     @State var startQuiz: Bool = false
     
@@ -41,7 +41,7 @@ struct ContentView: View {
                                 .opacity(quizViewModel.playerName.isEmpty ? 1.0 : 0.5)
                                 
                                 NavigationLink(
-                                    destination: QuizView(quizViewModel: quizViewModel),
+                                    destination: AlertView(quizViewModel: quizViewModel),
                                     isActive: $startQuiz,
                                     label: { EmptyView() }
                                 )
@@ -62,3 +62,4 @@ struct ContentView: View {
         }
     }
 }
+

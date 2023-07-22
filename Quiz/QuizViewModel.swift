@@ -1,4 +1,6 @@
 import Foundation
+import RealmSwift
+import Combine
 
 final class QuizViewModel: ObservableObject {
     @Published var playerName = ""
@@ -11,8 +13,9 @@ final class QuizViewModel: ObservableObject {
     @Published var selectedAnswer: String?
     @Published var isCorrectAnswer = false
     @Published var showAlert = false
-    
+    @Published var showStartView = true
     var questions: [Question] = []
+    private var cancellables: Set<AnyCancellable> = []
     
     func startQuiz() {
         score = 0
@@ -84,34 +87,34 @@ final class QuizViewModel: ObservableObject {
         }
         task.resume()
     }
-    
     func loadNextQuestion(selectedAnswer: String) {
-        checkAnswer(selectedAnswer) { isCorrect in
-            self.isCorrectAnswer = isCorrect
-            self.showAlert = true
-            
-            self.totalQuestionsAnswered += 1
-            if isCorrect {
-                self.score += 1
+        checkAnswer(selectedAnswer)
+            .sink { isCorrect in
+                self.isCorrectAnswer = isCorrect
+                self.showAlert = true
+                
+                self.totalQuestionsAnswered += 1
+                if isCorrect {
+                    self.score += 1
+                }
+                if self.totalQuestionsAnswered == 10 {
+                    self.isQuizFinished = true
+                } else {
+                    self.currentQuestionIndex += 1
+                }
+                
+                self.selectedAnswer = nil
             }
-            if self.totalQuestionsAnswered == 10 {
-                self.isQuizFinished = true
-            } else {
-                self.currentQuestionIndex += 1
-            }
-            
-            self.selectedAnswer = nil
-        }
+            .store(in: &cancellables)
     }
-    
-    func checkAnswer(_ selectedAnswer: String, completion: @escaping (Bool) -> Void) {
+
+    func checkAnswer(_ selectedAnswer: String) -> AnyPublisher<Bool, Never> {
         let answerData = ["answer": selectedAnswer]
         let jsonData = try? JSONSerialization.data(withJSONObject: answerData)
         
         guard let baseURL = URL(string: "https://quiz-api-bwi5hjqyaq-uc.a.run.app/answer?questionId=\(questions[currentQuestionIndex].id)"),
               let jsonData = jsonData else {
-            completion(false)
-            return
+            return Just(false).eraseToAnyPublisher()
         }
         
         var request = URLRequest(url: baseURL)
@@ -119,21 +122,43 @@ final class QuizViewModel: ObservableObject {
         request.httpBody = jsonData
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let data = data {
-                if let result = try? JSONDecoder().decode(Response.self, from: data) {
-                    DispatchQueue.main.async {
-                        completion(result.result)
-                    }
-                }
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .map { data, response in
+                return try? JSONDecoder().decode(Response.self, from: data)
             }
-        }
-        .resume()
+            .compactMap { $0 }
+            .map { $0.result }
+            .replaceError(with: false)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
     
     func restartQuiz() {
         isQuizStarted = false
         playerName = ""
         startQuiz()
+        let player = Player()
+             player.name = playerName
+             player.score = score
+
+             do {
+                 let realm = try Realm()
+                 try realm.write {
+                     realm.add(player)
+                 }
+             } catch {
+                 print("Error saving player data to Realm: \(error)")
+             }
+         }
+    func finishQuiz() {
+            let realm = try! Realm()
+            let player = Player()
+            player.name = playerName
+            player.score = score
+
+            try! realm.write {
+                realm.add(player)
+            }
+        }
     }
-}
+

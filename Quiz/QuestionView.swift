@@ -4,7 +4,8 @@ import SwiftUI
 struct QuestionView: View {
     let question: Question
     let answerHandler: (String) -> Void
-    
+    @State var showPlayerListView = false
+
     @State private var selectedAnswer: String?
     
     var body: some View {
@@ -70,5 +71,18 @@ struct QuestionView: View {
                     }
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showPlayerListView = true
+                    }) {
+                        Image(systemName: "person")
+                    }
+                }
+            }
+            .sheet(isPresented: $showPlayerListView) {
+                PlayerListView()
+            }
+
     }
 }

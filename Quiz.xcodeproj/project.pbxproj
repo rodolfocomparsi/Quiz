@@ -8,25 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		7648B57D2A68860900A340CE /* QuizApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648B57C2A68860900A340CE /* QuizApp.swift */; };
-		7648B57F2A68860900A340CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648B57E2A68860900A340CE /* ContentView.swift */; };
+		7648B57F2A68860900A340CE /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648B57E2A68860900A340CE /* LoginView.swift */; };
 		7648B5812A68860B00A340CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7648B5802A68860B00A340CE /* Assets.xcassets */; };
 		7648B5842A68860B00A340CE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7648B5832A68860B00A340CE /* Preview Assets.xcassets */; };
-		7648B58B2A68866400A340CE /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648B58A2A68866400A340CE /* QuizView.swift */; };
+		7648B58B2A68866400A340CE /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648B58A2A68866400A340CE /* AlertView.swift */; };
 		7648B58D2A68868500A340CE /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648B58C2A68868500A340CE /* QuestionView.swift */; };
 		7648B5912A6886CA00A340CE /* QuizModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648B5902A6886CA00A340CE /* QuizModel.swift */; };
 		766F77522A6AEF6C00C012EE /* QuizViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766F77512A6AEF6C00C012EE /* QuizViewModel.swift */; };
+		766F775C2A6BECB100C012EE /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 766F775B2A6BECB100C012EE /* Realm */; };
+		766F775E2A6BECB100C012EE /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 766F775D2A6BECB100C012EE /* RealmSwift */; };
+		766F77602A6BEDB600C012EE /* PlayerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766F775F2A6BEDB600C012EE /* PlayerListViewModel.swift */; };
+		766F77622A6BF30A00C012EE /* PlayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766F77612A6BF30A00C012EE /* PlayerListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		7648B5792A68860900A340CE /* Quiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7648B57C2A68860900A340CE /* QuizApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizApp.swift; sourceTree = "<group>"; };
-		7648B57E2A68860900A340CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7648B57E2A68860900A340CE /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		7648B5802A68860B00A340CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7648B5832A68860B00A340CE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		7648B58A2A68866400A340CE /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
+		7648B58A2A68866400A340CE /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		7648B58C2A68868500A340CE /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		7648B5902A6886CA00A340CE /* QuizModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizModel.swift; sourceTree = "<group>"; };
 		766F77512A6AEF6C00C012EE /* QuizViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewModel.swift; sourceTree = "<group>"; };
+		766F775F2A6BEDB600C012EE /* PlayerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewModel.swift; sourceTree = "<group>"; };
+		766F77612A6BF30A00C012EE /* PlayerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +40,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				766F775E2A6BECB100C012EE /* RealmSwift in Frameworks */,
+				766F775C2A6BECB100C012EE /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,14 +67,16 @@
 		7648B57B2A68860900A340CE /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
-				7648B57E2A68860900A340CE /* ContentView.swift */,
+				7648B57E2A68860900A340CE /* LoginView.swift */,
 				7648B58C2A68868500A340CE /* QuestionView.swift */,
-				7648B58A2A68866400A340CE /* QuizView.swift */,
+				7648B58A2A68866400A340CE /* AlertView.swift */,
 				7648B57C2A68860900A340CE /* QuizApp.swift */,
 				7648B5902A6886CA00A340CE /* QuizModel.swift */,
 				766F77512A6AEF6C00C012EE /* QuizViewModel.swift */,
 				7648B5802A68860B00A340CE /* Assets.xcassets */,
 				7648B5822A68860B00A340CE /* Preview Content */,
+				766F775F2A6BEDB600C012EE /* PlayerListViewModel.swift */,
+				766F77612A6BF30A00C012EE /* PlayerListView.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -95,6 +105,10 @@
 			dependencies = (
 			);
 			name = Quiz;
+			packageProductDependencies = (
+				766F775B2A6BECB100C012EE /* Realm */,
+				766F775D2A6BECB100C012EE /* RealmSwift */,
+			);
 			productName = Quiz;
 			productReference = 7648B5792A68860900A340CE /* Quiz.app */;
 			productType = "com.apple.product-type.application";
@@ -123,6 +137,9 @@
 				Base,
 			);
 			mainGroup = 7648B5702A68860900A340CE;
+			packageReferences = (
+				766F775A2A6BECB100C012EE /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+			);
 			productRefGroup = 7648B57A2A68860900A340CE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -150,11 +167,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7648B58D2A68868500A340CE /* QuestionView.swift in Sources */,
-				7648B57F2A68860900A340CE /* ContentView.swift in Sources */,
+				7648B57F2A68860900A340CE /* LoginView.swift in Sources */,
 				7648B57D2A68860900A340CE /* QuizApp.swift in Sources */,
+				766F77622A6BF30A00C012EE /* PlayerListView.swift in Sources */,
 				766F77522A6AEF6C00C012EE /* QuizViewModel.swift in Sources */,
+				766F77602A6BEDB600C012EE /* PlayerListViewModel.swift in Sources */,
 				7648B5912A6886CA00A340CE /* QuizModel.swift in Sources */,
-				7648B58B2A68866400A340CE /* QuizView.swift in Sources */,
+				7648B58B2A68866400A340CE /* AlertView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +374,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		766F775A2A6BECB100C012EE /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		766F775B2A6BECB100C012EE /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 766F775A2A6BECB100C012EE /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		766F775D2A6BECB100C012EE /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 766F775A2A6BECB100C012EE /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7648B5712A68860900A340CE /* Project object */;
 }
