@@ -2,12 +2,11 @@
 import SwiftUI
 
 struct QuestionView: View {
+    @StateObject var quizViewModel = QuizViewModel()
     let question: Question
     let answerHandler: (String) -> Void
-    @State var showPlayerListView = false
-
     @State private var selectedAnswer: String?
-    
+
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius: 20)
@@ -56,33 +55,20 @@ struct QuestionView: View {
                         }
                     }
                 }
-        }.navigationTitle(Text("Quiz"))
+        }
+        .navigationTitle(Text("Quiz"))
             .background(Color(.systemGray6))
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     VStack {
-                        Spacer()
+                        Spacer(minLength: 20)
                         Image("quiz")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 70, height: 70, alignment: .center)
-                        
                         Spacer()
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showPlayerListView = true
-                    }) {
-                        Image(systemName: "person")
-                    }
-                }
-            }
-            .sheet(isPresented: $showPlayerListView) {
-                PlayerListView()
-            }
-
+        }
     }
-}

@@ -2,10 +2,9 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var quizViewModel = QuizViewModel()
-    @State var startQuiz: Bool = false
-    
+    @Binding var startQuiz: Bool
+    @State var showPlayerListView = false
     var body: some View {
-        NavigationView {
             ZStack {
                 Color.secondary.opacity(0.5)
                     .ignoresSafeArea(.all, edges: .all)
@@ -28,7 +27,7 @@ struct LoginView: View {
                         .shadow(color: .black.opacity(0.5), radius: 10, x: 10, y: 10)
                         .overlay {
                             VStack {
-                                TextField("Digite seu nome", text: $quizViewModel.playerName)
+                                TextField("Digite seu nome", text: $quizViewModel.name)
                                     .padding()
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
                                 
@@ -37,8 +36,8 @@ struct LoginView: View {
                                     self.startQuiz = true
                                 }
                                 .padding()
-                                .disabled(quizViewModel.playerName.isEmpty)
-                                .opacity(quizViewModel.playerName.isEmpty ? 1.0 : 0.5)
+                                .disabled(quizViewModel.name.isEmpty)
+                                .opacity(quizViewModel.name.isEmpty ? 1.0 : 0.5)
                                 
                                 NavigationLink(
                                     destination: AlertView(quizViewModel: quizViewModel),
@@ -59,7 +58,19 @@ struct LoginView: View {
             .onAppear {
                 quizViewModel.isAnimated = true
             }
-        }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        self.showPlayerListView = true
+                    }) {
+                        Image(systemName: "person")
+                    }
+                }
+            }
+            .sheet(isPresented: $showPlayerListView) {
+                PlayerListView()
+            }
+        
     }
 }
 

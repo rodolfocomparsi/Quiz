@@ -1,4 +1,5 @@
 import SwiftUI
+import RealmSwift
 
 struct AlertView: View {
     @ObservedObject var quizViewModel: QuizViewModel
@@ -19,7 +20,7 @@ struct AlertView: View {
                 }
             } else if quizViewModel.isQuizFinished {
                 VStack {
-                    Text("Parabéns, \(quizViewModel.playerName)!")
+                    Text("Parabéns, \(quizViewModel.name)!")
                         .font(.headline)
                         .padding()
                     Text("Você acertou \(quizViewModel.score) perguntas.")
@@ -29,9 +30,18 @@ struct AlertView: View {
                         quizViewModel.restartQuiz()
                     }
                     .padding()
+                }.onAppear {
+                    CoreDataManager.shared.savePlayer(name: quizViewModel.name, score: quizViewModel.score)
                 }
             }
         }
         .padding()
+        .alert(isPresented: $quizViewModel.isAlertPresented) {
+            Alert(
+                title: Text(quizViewModel.alertTitle),
+                message: Text(quizViewModel.alertMessage),
+                dismissButton: .cancel(Text("OK"))
+            )
+        }
     }
 }

@@ -1,9 +1,11 @@
 import Foundation
+import SwiftUI
+import UIKit
 import RealmSwift
 import Combine
 
 final class QuizViewModel: ObservableObject {
-    @Published var playerName = ""
+    @Published var name = ""
     @Published var isQuizStarted = false
     @Published var currentQuestionIndex = 0
     @Published var score = 0
@@ -16,6 +18,9 @@ final class QuizViewModel: ObservableObject {
     @Published var showStartView = true
     var questions: [Question] = []
     private var cancellables: Set<AnyCancellable> = []
+    @Published var isAlertPresented = false
+    @Published var alertTitle = ""
+    @Published var alertMessage = ""
     
     func startQuiz() {
         score = 0
@@ -90,23 +95,33 @@ final class QuizViewModel: ObservableObject {
     func loadNextQuestion(selectedAnswer: String) {
         checkAnswer(selectedAnswer)
             .sink { isCorrect in
-                self.isCorrectAnswer = isCorrect
-                self.showAlert = true
-                
-                self.totalQuestionsAnswered += 1
                 if isCorrect {
                     self.score += 1
+                    self.alertTitle = "Resposta Correta"
+                    self.alertMessage = "Parabéns! Você acertou a pergunta."
+                } else {
+                    self.alertTitle = "Resposta Incorreta"
+                    self.alertMessage = "Ops! Você errou a pergunta."
                 }
+
+                self.isAlertPresented = true
+
+                self.totalQuestionsAnswered += 1
+
                 if self.totalQuestionsAnswered == 10 {
                     self.isQuizFinished = true
                 } else {
-                    self.currentQuestionIndex += 1
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        self.currentQuestionIndex += 1
+                    }
                 }
-                
+
                 self.selectedAnswer = nil
             }
             .store(in: &cancellables)
     }
+
+
 
     func checkAnswer(_ selectedAnswer: String) -> AnyPublisher<Bool, Never> {
         let answerData = ["answer": selectedAnswer]
@@ -135,30 +150,39 @@ final class QuizViewModel: ObservableObject {
     
     func restartQuiz() {
         isQuizStarted = false
-        playerName = ""
+        name = ""
         startQuiz()
-        let player = Player()
-             player.name = playerName
-             player.score = score
-
-             do {
-                 let realm = try Realm()
-                 try realm.write {
-                     realm.add(player)
-                 }
-             } catch {
-                 print("Error saving player data to Realm: \(error)")
-             }
          }
-    func finishQuiz() {
-            let realm = try! Realm()
-            let player = Player()
-            player.name = playerName
-            player.score = score
+    }
 
-            try! realm.write {
-                realm.add(player)
-            }
+final class CoreDataManager {
+    static let shared = CoreDataManager()
+
+    private let realm: Realm
+
+    private init() {
+        do {
+            realm = try Realm()
+            print("Realm file: \(realm.configuration.fileURL?.absoluteString ?? "")")
+        } catch {
+            fatalError("Erro ao configurar o Realm: \(error)")
         }
     }
 
+    func savePlayer(name: String, score: Int) {
+        do {
+            try realm.write {
+                let player = Player()
+                player.name = name
+                player.score = score
+                realm.add(player)
+            }
+        } catch {
+            print("Erro ao salvar o jogador: \(error)")
+        }
+    }
+
+    func fetchPlayers() -> Results<Player> {
+        return realm.objects(Player.self)
+    }
+}
