@@ -46,6 +46,15 @@ struct NameInputView: View {
             }
             .padding()
         }
-
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Rank") {
+                    isRankPresented = true
+                }
+            }
+        }
+        .sheet(isPresented: $isRankPresented) {
+            RankView()
+        }
     }
 }

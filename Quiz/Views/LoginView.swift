@@ -4,7 +4,7 @@ import SwiftUI
 struct LoginView: View {
     @EnvironmentObject var quizViewModel: QuizViewModel
     @State private var showPlayerListView = false
-    
+
     var body: some View {
         ZStack {
             Color.secondary.opacity(0.5)
@@ -39,6 +39,18 @@ struct LoginView: View {
                 
                 Spacer()
             }
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    showPlayerListView = true
+                }) {
+                    Image(systemName: "person")
+                }
+            }
+        }
+        .sheet(isPresented: $showPlayerListView) {
+            RankView()
         }
     }
 }
