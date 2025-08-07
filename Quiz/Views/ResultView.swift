@@ -33,7 +33,24 @@ struct ResultView: View {
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 
+                
+                Button(action: {
+                    quizViewModel.showStartView = true
+                    quizViewModel.isQuizStarted = false
+                    if !editedName.isEmpty {
+                        quizViewModel.name = editedName
+                    }
+                }){
+                    Text("Voltar à Tela Principal")
+                        .padding(.horizontal,5)
+                }
+                .frame(maxWidth: .infinity,maxHeight: .infinity, alignment: .center)
+                .background(Color.gray)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                
             }
+            .frame(maxWidth: 200 ,maxHeight: 80, alignment: .center)
             
         }
         .padding()

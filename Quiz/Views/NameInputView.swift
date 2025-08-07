@@ -19,7 +19,7 @@ struct NameInputView: View {
                         .frame(width: 80, height: 80)
                 }
                 .padding(.vertical, 80)
-                
+
                 TextField("Digite seu nome ou apelido", text: $name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: 250)
@@ -46,11 +46,6 @@ struct NameInputView: View {
             }
             .padding()
         }
-    }
-}
 
-struct NameInputView_Previews: PreviewProvider {
-    static var previews: some View {
-        NameInputView()
     }
 }

@@ -2,12 +2,22 @@
 import SwiftUI
 
 @main
-struct QuizApp: App {
+struct QuizApp: SwiftUI.App {
+    @StateObject private var quizViewModel = QuizViewModel()
+    
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                NameInputView()
+                if quizViewModel.showStartView {
+                    NameInputView()
+                } else if quizViewModel.isQuizStarted {
+                    AlertView(quizViewModel: quizViewModel)
+                } else {
+                    LoginView()
+                }
             }
+            .environmentObject(quizViewModel)
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }
