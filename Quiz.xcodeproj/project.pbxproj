@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7676BE272E4448E200E9C240 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 7676BE262E4448E200E9C240 /* RealmSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		7676BDDA2E442A8C00E9C240 /* Quiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7676BE272E4448E200E9C240 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = Quiz;
 			packageProductDependencies = (
+				7676BE262E4448E200E9C240 /* RealmSwift */,
 			);
 			productName = Quiz;
 			productReference = 7676BDDA2E442A8C00E9C240 /* Quiz.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 7676BDD12E442A8C00E9C240;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7676BE252E4448E200E9C240 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7676BDDB2E442A8C00E9C240 /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7676BE252E4448E200E9C240 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7676BE262E4448E200E9C240 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7676BE252E4448E200E9C240 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7676BDD22E442A8C00E9C240 /* Project object */;
 }
