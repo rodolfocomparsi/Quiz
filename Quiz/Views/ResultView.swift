@@ -2,41 +2,46 @@
 import SwiftUI
 
 struct ResultView: View {
-    @ObservedObject var viewModel: QuizViewModel
+    @ObservedObject var quizViewModel: QuizViewModel
+    @State private var editedName: String = ""
     
     var body: some View {
         VStack {
-            Text("Fim do Quiz!")
-                .font(.largeTitle)
+            Text("Parabéns, \(quizViewModel.name)!")
+                .font(.headline)
                 .padding()
-            Text("Parabéns, \(viewModel.name)!")
-                .font(.title)
+            Text("Você acertou \(quizViewModel.score) de 10 perguntas.")
+                .font(.subheadline)
                 .padding()
-            Text("Sua pontuação: \(viewModel.score) de \(viewModel.questions.count)")
-                .font(.title2)
+            
+            TextField("Editar nome", text: $editedName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-            Button("Reiniciar Quiz") {
-                viewModel.saveScore()
-                viewModel.name = ""
-                viewModel.isQuizStarted = false
-                viewModel.questions.removeAll()
-                viewModel.currentQuestionIndex = 0
-                viewModel.score = 0
+            
+            VStack {
+                Button(action: {
+                    if !editedName.isEmpty {
+                        quizViewModel.name = editedName
+                    }
+                    quizViewModel.restartQuiz()
+                }) {
+                    Text("Recomeçar Quiz")
+                        .padding(.horizontal,5)
+                }
+                .frame(maxWidth: .infinity,maxHeight: .infinity, alignment: .center)
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                
             }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(8)
+            
         }
         .padding()
         .onAppear {
-            viewModel.saveScore()
+            editedName = quizViewModel.name
         }
     }
 }
-
-struct ResultView_Previews: PreviewProvider {
-    static var previews: some View {
-        ResultView(viewModel: QuizViewModel())
-    }
+#Preview{
+    ResultView(quizViewModel: QuizViewModel())
 }

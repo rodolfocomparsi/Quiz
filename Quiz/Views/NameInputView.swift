@@ -2,30 +2,47 @@
 import SwiftUI
 
 struct NameInputView: View {
-    @StateObject private var viewModel = QuizViewModel()
+    @EnvironmentObject var viewModel: QuizViewModel
+    @State private var name: String = ""
+    @State private var isRankPresented = false
     
     var body: some View {
-        NavigationView {
-            VStack {
-                Image(systemName: "questionmark.circle")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80, height: 80)
-                TextField("Digite seu nome", text: $viewModel.name)
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+            
+            VStack(spacing: 20) {
+                VStack {
+                    Image("quiz")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
+                }
+                .padding(.vertical, 80)
+                
+                TextField("Digite seu nome ou apelido", text: $name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                NavigationLink(destination: viewModel.isQuizStarted ? AnyView(QuestionView(viewModel: viewModel, question: viewModel.questions.isEmpty ? Question(id: "", statement: "", options: [], correctAnswer: nil) : viewModel.questions[viewModel.currentQuestionIndex])) : AnyView(EmptyView()), isActive: $viewModel.isQuizStarted) {
+                    .frame(width: 250)
+                
+                if viewModel.isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .scaleEffect(1.5)
+                } else {
                     Button("Iniciar Quiz") {
-                        if !viewModel.name.isEmpty {
+                        if !name.isEmpty {
+                            viewModel.name = name
                             viewModel.startQuiz()
                         }
                     }
-                    .disabled(viewModel.name.isEmpty)
+                    .disabled(name.isEmpty)
                     .padding()
-                    .background(viewModel.name.isEmpty ? Color.gray : Color.blue)
+                    .background(name.isEmpty ? Color.gray : Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(8)
                 }
+                
+                Spacer()
             }
             .padding()
         }

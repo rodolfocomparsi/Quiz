@@ -1,48 +1,65 @@
 
+
 import SwiftUI
 
 struct QuestionView: View {
-    @ObservedObject var viewModel: QuizViewModel
+    @ObservedObject var quizViewModel: QuizViewModel
     let question: Question
+    let answerHandler: (String) -> Void
     @State private var selectedAnswer: String?
     
     var body: some View {
-        VStack {
-            Text(question.statement)
-                .font(.headline)
-                .padding()
-            ForEach(question.options, id: \.self) { option in
-                Button(action: {
-                    if selectedAnswer == nil {
-                        selectedAnswer = option
-                        _ = viewModel.checkAnswer(option)
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Material.thinMaterial)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .shadow(color: .black.opacity(0.5), radius: 10, x: 10, y: 10)
+                .overlay {
+                    VStack {
+                        Text(question.statement)
+                            .font(.headline)
+                            .minimumScaleFactor(0.7)
+                            .padding()
+                        
+                        Spacer()
+                        
+                        VStack {
+                            ForEach(question.options, id: \.self) { option in
+                                Button(action: {
+                                    selectedAnswer = option
+                                    if let currentAnswer = selectedAnswer {
+                                        answerHandler(currentAnswer)
+                                    }
+                                    
+                                }) {
+                                    HStack {
+                                        Text(option)
+                                            .minimumScaleFactor(0.7)
+                                            Image(systemName: quizViewModel.isCorrectAnswer ? "checkmark" : "xmark")
+                                                .foregroundColor(quizViewModel.isCorrectAnswer ? .green : .red)
+                                        
+                                    }
+                                    .padding()
+                                    .foregroundColor(.white)
+                                    .cornerRadius(8)
+                                }
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        Button("Próxima") {
+                            if quizViewModel.canProceed {
+                                quizViewModel.proceedToNext()
+                                selectedAnswer = nil
+                            }
+                        }
+                        .padding()
+                        .disabled(!quizViewModel.canProceed)
+                        .opacity(!quizViewModel.canProceed ? 0.5 : 1.0)
+                        
                     }
-                }) {
-                    Text(option)
-                        .padding()
-                        .background(selectedAnswer == option ? Color.blue : Color.gray)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
                 }
-                .disabled(selectedAnswer != nil)
-            }
-            Text("Pontuação: \(viewModel.score)")
-                .padding()
-            if viewModel.isQuizFinished {
-                NavigationLink(destination: ResultView(viewModel: viewModel)) {
-                    Text("Ver Resultado")
-                        .padding()
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-            }
         }
-    }
-}
-
-struct QuestionView_Previews: PreviewProvider {
-    static var previews: some View {
-        QuestionView(viewModel: QuizViewModel(), question: Question(id: "1", statement: "Teste?", options: ["A", "B"], correctAnswer: nil))
     }
 }
