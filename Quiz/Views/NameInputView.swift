@@ -4,57 +4,58 @@ import SwiftUI
 struct NameInputView: View {
     @EnvironmentObject var viewModel: QuizViewModel
     @State private var name: String = ""
-    @State private var isRankPresented = false
     
     var body: some View {
-        ZStack {
-            Color.white
-                .ignoresSafeArea()
+        VStack {
+            HStack(spacing: 12) {
+                Image("DynamoxLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 56, height: 56)
+                
+                Text("Dynamox Quiz")
+                    .font(.system(size: 24).bold())
+                    .foregroundColor(Color("DynamoxColor"))
+            }
+            .frame(width: 250, height: 56, alignment: .top)
             
-            VStack(spacing: 20) {
-                VStack {
-                    Image("quiz")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80, height: 80)
-                }
-                .padding(.vertical, 80)
-
-                TextField("Digite seu nome ou apelido", text: $name)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 250)
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Digite seu nome:")
                 
-                if viewModel.isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
-                        .scaleEffect(1.5)
-                } else {
-                    Button("Iniciar Quiz") {
-                        if !name.isEmpty {
-                            viewModel.name = name
-                            viewModel.startQuiz()
-                        }
+                TextField("Nome", text: $name)
+                    .textFieldStyle(.roundedBorder)
+                    .foregroundColor(Color("DynamoxColor"))
+                    .frame(maxWidth: 299, maxHeight: 48)
+                
+                
+                Button(action: {
+                    if !name.isEmpty {
+                        viewModel.name = name
+                        viewModel.startQuiz()
                     }
-                    .disabled(name.isEmpty)
-                    .padding()
-                    .background(name.isEmpty ? Color.gray : Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                }
+                }, label: {
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .scaleEffect(1.5)
+                            .foregroundColor(.white)
+                    } else {
+                        Text("Começar")
+                            .foregroundColor(.white)
+                    }
+                })
+                .disabled(name.isEmpty)
+                .frame(maxWidth: 299, maxHeight: 48)
+                .background(Color("DynamoxColor"))
+                .cornerRadius(8)
                 
-                Spacer()
             }
-            .padding()
+            .frame(width: 300, height: 150, alignment: .center)
+            .padding(.top, 200)
+            
+            Spacer()
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Rank") {
-                    isRankPresented = true
-                }
-            }
-        }
-        .sheet(isPresented: $isRankPresented) {
-            RankView()
-        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 }

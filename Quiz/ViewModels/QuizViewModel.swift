@@ -8,7 +8,7 @@ final class QuizViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var isQuizStarted: Bool = false
     @Published var currentQuestionIndex: Int = 0
-    @Published var score: Int = 0
+    @Published var score: Int = 1
     @Published var totalQuestionsAnswered: Int = 0
     @Published var isQuizFinished: Bool = false
     @Published var selectedAnswer: String?

@@ -12,8 +12,6 @@ struct QuizApp: SwiftUI.App {
                     NameInputView()
                 } else if quizViewModel.isQuizStarted {
                     AlertView(quizViewModel: quizViewModel)
-                } else {
-                    LoginView()
                 }
             }
             .environmentObject(quizViewModel)
